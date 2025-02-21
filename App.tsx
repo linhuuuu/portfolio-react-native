@@ -1,126 +1,118 @@
 import React, { useState } from 'react';
-import {StyleSheet,Text,View,Image,SectionList,Switch,FlatList,} from 'react-native';
+import { StyleSheet, Text, View, Image, Switch, FlatList, ScrollView, ImageBackground, } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 export default function App() {
   const [theme, SetTheme] = useState(true); // true = lightmode; false = darkmode
-  const toggleSwitch = () => SetTheme(!theme);
+  const toggleSwitch = () => SetTheme(!theme);  //switch
 
-  // Define the type for items in flatlistData
-  type FlatlistItem = {
-    id: string;
-    title: string;
-    description: string;
-    image: any; // Use `ImageSourcePropType` from 'react-native' for stricter typing
-  };
-
-  const flatlistData: FlatlistItem[] = [
+  //flatlistdata 
+  const DATA = [
     {
       id: '1',
       title: 'Dead Elevator',
-      description:
-        'Video game requirement for our Elective Finals. You play as a paranormal detective trying to escape an elevator against ghosts',
-      image: require('./assets/favicon.png'),
+      description: 'Echoes of the past live in the apartments molden walls.',
+      image: require('./assets/deadelevator.png'),
     },
     {
       id: '2',
-      title: 'Dead Elevator',
-      description:
-        'Video game requirement for our Elective Finals. You play as a paranormal detective trying to escape an elevator against ghosts',
-      image: require('./assets/favicon.png'),
+      title: 'Rumplestiltskin',
+      description: 'Early European tales of deception, royalty, feudalism and betrayal.',
+      image: require('./assets/rumplestiltskin.png'),
+    },
+    {
+      id: '3',
+      title: 'Coin Crisis',
+      description: 'The key to a good relationship is to have a enough money for yourself and the self that wants.',
+      image: require('./assets/coincrisis.png'),
     },
   ];
 
-  // Functional component for rendering FlatList items
-  const RenderFlatlistItem: React.FC<{ item: FlatlistItem }> = ({ item }) => {
-    return (
-      <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-        <Image source={item.image} style={{ width: 80, height: 80 }} />
-        <Text style={[theme === false ? styles.darkmode : styles.lightmode]}>
-          {item.title}
-        </Text>
-        <Text style={[theme === false ? styles.darkmode : styles.lightmode]}>
-          {item.description}
-        </Text>
+  type ItemProps = { title: string, description: string, image: any }; //init flatlist props
+
+  //flatlist item renderer
+  const Item = ({ title, description, image }: ItemProps) => (
+    <ImageBackground source={image}
+      style={[styles.center, styles.flatImg,
+      theme === false ? [styles.darkmode, styles.borderdarkmode] : [styles.lightmode, styles.borderlightmode]]}>
+
+      <View style={[styles.flatText,
+      theme === false ? [styles.darkmode, styles.borderdarkmode] : [styles.lightmode, styles.borderlightmode]]}>
+        <Text style={[theme === false ? styles.darkmode : styles.lightmode, {fontSize:20}]}>{title}</Text>
+        <Text style={theme === false ? styles.darkmode : styles.lightmode}>{description}</Text>
       </View>
-    );
-  };
+    </ImageBackground>
+  );
 
   return (
+    //platform init
     <SafeAreaProvider style={[styles.center, theme === false ? styles.darkmode : styles.lightmode]}>
-      <SafeAreaView style={[styles.container, styles.center, theme === false ? styles.darkmode : styles.lightmode]}>
-        
-        {/* Header */}
-        <View style={[styles.center, { flex: 2, marginTop: 100 }]}>
-          <Image source={require('./assets/favicon.png')} />
-          <Text style={theme === false ? styles.darkmode : styles.lightmode}>
-            Arturo Andres
-          </Text>
-        </View>
+      <SafeAreaView style={[styles.container, theme === false ? styles.darkmode : styles.lightmode]}>
+        <ScrollView contentContainerStyle={styles.scrollViewContent}>
 
-        {/* About Section */}
-        <View style={[styles.center, { flex: 3, flexDirection: 'column' }]}>
+          {/*Header*/}
+          <View style={[styles.center, { marginTop: 20 }]}>
+            <View style={[styles.center, styles.profile, theme === false ? styles.borderdarkmode : styles.borderlightmode]}>
+              <Image source={require('./assets/profile.png')} />
+            </View>
+            <Text style={[theme === false ? styles.darkmode : styles.lightmode, { fontSize: 40, fontWeight: 'bold' }]}>
+              ARTURO
+            </Text>
+          </View>
+
+          {/* ABOUT */}
           <View style={[styles.center]}>
-            <Text style={[theme === false ? styles.darkmode : styles.lightmode]}>
+            <Text style={[theme === false ? styles.darkmode : styles.lightmode, { textAlign: 'center' }]}>
               2003, Artist, Writer. Arturo is a Computer Science Student on his 3rd Year.
             </Text>
           </View>
 
-          {/* Skills and Contact Info */}
-          <View style={[styles.center, { marginTop: 40 }]}>
-            <SectionList
-              contentContainerStyle={[styles.center, { marginBottom: 8 }]}
-              sections={[
-                { title: 'Skills', data: ['Art', 'Programming', 'Writing'] },
-                { title: 'Contact Info', data: ['Email'] },
-              ]}
-              renderItem={({ item }) => (
-                <Text style={[theme === false ? styles.darkmode : styles.lightmode]}>
-                  {item}
-                </Text>
-              )}
-              renderSectionHeader={({ section }) => (
-                <Text style={[theme === false ? styles.darkmode : styles.lightmode]}>
-                  {section.title}
-                </Text>
-              )}
-              keyExtractor={(item, index) => item + index}
-            />
+          {/*SKILLS AND CONTACT INFO*/}
+          <View style={[styles.center,]}>
+            <View style={[{ alignItems: 'center', padding: 20 }]}>
+              <Text style={[styles.header, theme === false ? styles.darkmode : styles.lightmode]}> Skills </Text>
+              <Text style={[theme === false ? styles.darkmode : styles.lightmode]}>Art | Writing | Character Design</Text>
+            </View>
+            <View style={[{ alignItems: 'center' }]}>
+              <Text style={[styles.header, theme === false ? styles.darkmode : styles.lightmode]}> Contacts </Text>
+              <Text style={[theme === false ? styles.darkmode : styles.lightmode]}>GitHub: https://github.com/linhuuuu</Text>
+              <Text style={[theme === false ? styles.darkmode : styles.lightmode]}>Email: arturo_andres_desilva@gmail.com</Text>
+            </View>
           </View>
 
-          {/* Projects Section */}
-          <View style={{ flex: 2 }}>
-            <Text>Projects</Text>
+          {/*PROJECTS*/}
+          <View style={[styles.center, { marginTop: 20 }]}>
+            <Text style={styles.header}> Project </Text>
             <FlatList
-              data={flatlistData}
-              keyExtractor={(item) => item.id.toString()}
-              renderItem={({ item }) => <RenderFlatlistItem item={item} />}
-              contentContainerStyle={styles.center}
+              data={DATA}
+              renderItem={({ item }) => <Item title={item.title} description={item.description} image={item.image} />}
+              keyExtractor={(item) => item.id}
+              scrollEnabled={false}
             />
           </View>
-        </View>
 
-        {/* Theme Toggle */}
-        <View style={[styles.center, { flexDirection: 'row', flex: 2, marginTop: 20 }]}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text
-              style={[
-                theme === false ? styles.darkmode : styles.lightmode,
-                { marginRight: 10 },
-              ]}
-            >
-              {theme === false ? 'Dark Mode' : 'Light Mode'}
-            </Text>
-            <Switch
-              trackColor={{ false: '#fff', true: '#000' }}
-              thumbColor={'#fff'}
-              ios_backgroundColor={'#000'}
-              onValueChange={toggleSwitch}
-              value={theme}
-              style={[theme === false ? styles.darkmode : styles.lightmode]}
-            />
+          {/* Theme Toggle */}
+          <View style={[styles.center, { flexDirection: 'row', marginTop: 20 }]}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text
+                style={[
+                  theme === false ? styles.darkmode : styles.lightmode,
+                  { marginRight: 10, color: '#737373', fontSize: 15 },
+                ]}
+              >
+                {theme === false ? 'Dark Mode' : 'Light Mode'}
+              </Text>
+              <Switch
+                trackColor={{ false: '#fff', true: '#000' }}
+                thumbColor={ '#737373'}
+                ios_backgroundColor={'#000'}
+                onValueChange={toggleSwitch}
+                value={theme}
+                style={[theme === false ? styles.darkmode : styles.lightmode]}
+              />
+            </View>
           </View>
-        </View>
+        </ScrollView>
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -128,23 +120,60 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'column',
     flex: 1,
-    flexWrap: 'nowrap',
-    width: '80%',
-    height: '100%',
     backgroundColor: '#fff',
   },
   center: {
     justifyContent: 'center',
     alignItems: 'center',
   },
+  scrollViewContent: {
+    flexGrow: 1,
+    padding: 20,
+  },
   darkmode: {
     color: '#fff',
     backgroundColor: '#000',
+    borderColor: '#000'
   },
   lightmode: {
     color: '#000',
     backgroundColor: '#fff',
   },
+  borderdarkmode: {
+    borderColor: '#fff'
+  },
+  borderlightmode: {
+    borderColor: '#000'
+  },
+  header: {
+    fontSize: 20,
+    fontWeight: 'bold'
+  },
+  flatImg: {
+    borderRadius: 20,
+    margin: 20,
+    height: 200,
+    overflow: 'hidden',
+    justifyContent: 'flex-end',
+    borderWidth: 2
+  },
+  flatText: {
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10,
+    height: '50%',
+    width: '100%',
+    padding: 10,
+    overflow: 'scroll',
+    borderTopWidth: 2
+  },
+  profile: {
+    width: 100, 
+    height: 100, 
+    overflow: 'hidden', 
+    borderRadius: 100, 
+    borderWidth: 2, 
+    margin: 10 
+  }
+  
 });
