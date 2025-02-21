@@ -71,7 +71,7 @@ export default function App() {
           <View style={[styles.center,]}>
             <View style={[{ alignItems: 'center', padding: 20 }]}>
               <Text style={[styles.header, theme === false ? styles.darkmode : styles.lightmode]}> Skills </Text>
-              <Text style={[theme === false ? styles.darkmode : styles.lightmode]}>Art | Writing | Character Design</Text>
+              <Text style={[theme === false ? styles.darkmode : styles.lightmode]}>C++ | SQL | C#</Text>
             </View>
             <View style={[{ alignItems: 'center' }]}>
               <Text style={[styles.header, theme === false ? styles.darkmode : styles.lightmode]}> Contacts </Text>
